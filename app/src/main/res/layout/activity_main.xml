@@ -13,7 +13,7 @@
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="match_parent"
-        android:layout_height="387dp"
+        android:layout_height="match_parent"
         android:layout_alignBottom="@+id/button_image"
         android:layout_centerHorizontal="true" />
 
@@ -26,9 +26,11 @@
         android:onClick="takePicture"
         android:text="Take a picture!" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="84dp" />
+    <Button
+        android:id="@+id/processButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:text="Process" />
 
 </RelativeLayout>
