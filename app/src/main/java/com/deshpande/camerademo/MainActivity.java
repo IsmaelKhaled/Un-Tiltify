@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         process.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendPost("http://192.168.1.3:5000/");
+                sendPost("http://192.168.1.5:5000/");
             }
         });
     }
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         }
     public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
         byte[] byteFormat = stream.toByteArray();
         // get the base 64 string
         String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
