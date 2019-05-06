@@ -64,7 +64,6 @@ def image_aligner(normal_BGR):
     opened = cv.morphologyEx(gray, cv.MORPH_OPEN, kernel_ellipse_3x3) #Open the greyscale copy to remove some detail from the image
     edges = cv.Canny(opened, 50, 150, apertureSize=3) #Canny detection to detect the lines
     lines = cv.HoughLines(edges, 1, np.pi/180, 150) #Hough transform to detect more robust lines from the canny edge detection
-    linesP = cv.HoughLinesP(edges, 1, np.pi/180, 260,30)
     
     
     edges = np.float32(edges)
@@ -97,8 +96,6 @@ def image_aligner(normal_BGR):
                 bot_corner_y = y
     for i in range(-3,3):
         img[bot_corner+i,:] = [0,255,0]
-    # print("Top corner coordinate:",top_corner)
-    # print("Bottom corner coordinate:", bot_corner)
     
     #Initialize angles arrays
     angles90 = []
@@ -149,11 +146,8 @@ def image_aligner(normal_BGR):
     
     
     #Calculate the tilt angle of the photo
-    # print("Margin left:", margin_left,"Margin right:", margin_right)
     array90 = np.array(angles90)
     array180 = np.array(angles180)
-    # print("90 Angles:",array90)
-    # print("180 or 0 Angles:",array180)
     average90 = np.average(array90)
     average180 = np.average(array180)
     
@@ -172,8 +166,7 @@ def image_aligner(normal_BGR):
     else:
         cv.putText(img,str(int(90-average90)),(int(img.shape[1]/2),top_corner), font, 6,(0,0,255),2,cv.LINE_AA)
         cv.putText(img,"o",(int((img.shape[1]/2)+len(str(int(90-average90)))*100),top_corner-80), font, 3,(0,0,255),2,cv.LINE_AA) 
-    print("90 Average:",90-average90)
-    print("180 Average Updates:",0-average180)
+		
     return img
 
 #Plot the result (Only for testing)
