@@ -85,7 +85,8 @@ def image_aligner(normal_BGR):
                 break
         if dst[x,y] > 0:
             break
-    img[top_corner,:] = [0,255,0]
+    for i in range(-3,3):
+        img[top_corner+i,:] = [0,255,0]
     test = np.zeros_like(img)
     
     #Detect the far bottom corner to be used for reference lines
@@ -94,7 +95,8 @@ def image_aligner(normal_BGR):
             if dst[x,y] > 0:
                 bot_corner = x
                 bot_corner_y = y
-    img[bot_corner,:] = [0,255,0]
+    for i in range(-3,3):
+        img[bot_corner+i,:] = [0,255,0]
     # print("Top corner coordinate:",top_corner)
     # print("Bottom corner coordinate:", bot_corner)
     
@@ -137,8 +139,11 @@ def image_aligner(normal_BGR):
     
             
     #Make the margin lines and calculate the margin values
-    img[:,min_X] = [0,255,0]
-    img[:,max_X] = [0,255,0]
+    for i in range(-3,3):
+        if max_X+1 < img.shape[1] and min_X+1 < img.shape[1]:
+            img[:,min_X+i] = [0,255,0]
+            img[:,max_X+i] = [0,255,0]
+        
     margin_left = min_X
     margin_right = img.shape[1] - max_X
     
@@ -156,19 +161,19 @@ def image_aligner(normal_BGR):
     #Print the margins on the photo if the photo is upright (angles are close to 0)
     #if (average90 < 92 and average90 > 88 and portrait) or ((not portrait) and average180 < 92 and average180 > 88):
     if min_X != img.shape[1]-1:
-        cv.putText(img,str(margin_left),(int(min_X/2),int(img.shape[0]/2)), font, 4,(0,0,255),2,cv.LINE_AA)
+        cv.putText(img,str(margin_left),(int(min_X/2),int(img.shape[0]/2)), font, 6,(0,0,255),2,cv.LINE_AA)
     if max_X != 0:
-        cv.putText(img,str(margin_right),(int(max_X+margin_right/32),int(img.shape[0]/2)), font, 4,(0,0,255),2,cv.LINE_AA)
+        cv.putText(img,str(margin_right),(int(max_X-margin_right/16),int(img.shape[0]/2)), font, 6,(0,0,255),2,cv.LINE_AA)
         
     #Print the difference between the angle and the reference line above the reference line.
     if not portrait:
-        cv.putText(img,str(int(90-average180)),(int(img.shape[1]/2),top_corner), font, 4,(0,0,255),2,cv.LINE_AA)
-        cv.putText(img,"o",(int((img.shape[1]/2)+len(str(int(90-average180)))*40),top_corner-30), font, 1,(0,0,255),2,cv.LINE_AA)
+        cv.putText(img,str(int(90-average180)),(int(img.shape[1]/2),top_corner), font, 6,(0,0,255),2,cv.LINE_AA)
+        cv.putText(img,"o",(int((img.shape[1]/2)+len(str(int(90-average180)))*100),top_corner-80), font, 3,(0,0,255),2,cv.LINE_AA)
     else:
-        cv.putText(img,str(int(90-average90)),(int(img.shape[1]/2),top_corner), font, 4,(0,0,255),2,cv.LINE_AA)
-        cv.putText(img,"o",(int((img.shape[1]/2)+len(str(int(90-average90)))*40),top_corner-30), font, 2,(0,0,255),2,cv.LINE_AA) 
+        cv.putText(img,str(int(90-average90)),(int(img.shape[1]/2),top_corner), font, 6,(0,0,255),2,cv.LINE_AA)
+        cv.putText(img,"o",(int((img.shape[1]/2)+len(str(int(90-average90)))*100),top_corner-80), font, 3,(0,0,255),2,cv.LINE_AA) 
     print("90 Average:",90-average90)
-    print("180 Average:",0-average180)
+    print("180 Average Updates:",0-average180)
     return img
 
 #Plot the result (Only for testing)
